@@ -1,6 +1,6 @@
 ## 列出镜像
 
-要想列出已经下载下来的镜像，可以使用 `docker image ls` 命令。
+要想列出已经下载下来的镜像，可以使用 `docker images ls` 命令。
 
 ```bash
 $ docker image ls
