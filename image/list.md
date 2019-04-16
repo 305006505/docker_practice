@@ -1,9 +1,9 @@
 ## 列出镜像
 
-要想列出已经下载下来的镜像，可以使用 `docker image ls` 命令。
+要想列出已经下载下来的镜像，可以使用 `docker images ls` 命令。
 
 ```bash
-$ docker image ls
+$ docker images ls
 REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
 redis                latest              5f515359c7f8        5 days ago          183 MB
 nginx                latest              05a60462f8ba        5 days ago          181 MB
@@ -62,7 +62,7 @@ $ docker image prune
 为了加速镜像构建、重复利用资源，Docker 会利用 **中间层镜像**。所以在使用一段时间后，可能会看到一些依赖的中间层镜像。默认的 `docker image ls` 列表中只会显示顶层镜像，如果希望显示包括中间层镜像在内的所有镜像的话，需要加 `-a` 参数。
 
 ```bash
-$ docker image ls -a
+$ docker images ls -a
 ```
 
 这样会看到很多无标签的镜像，与之前的虚悬镜像不同，这些无标签的镜像很多都是中间层镜像，是其它镜像所依赖的镜像。这些无标签镜像不应该删除，否则会导致上层镜像因为依赖丢失而出错。实际上，这些镜像也没必要删除，因为之前说过，相同的层只会存一遍，而这些镜像是别的镜像的依赖，因此并不会因为它们被列出来而多存了一份，无论如何你也会需要它们。只要删除那些依赖它们的镜像后，这些依赖的中间层镜像也会被连带删除。
@@ -74,7 +74,7 @@ $ docker image ls -a
 根据仓库名列出镜像
 
 ```bash
-$ docker image ls ubuntu
+$ docker images ls ubuntu
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 ubuntu              18.04               f753707788c5        4 weeks ago         127 MB
 ubuntu              latest              f753707788c5        4 weeks ago         127 MB
@@ -83,7 +83,7 @@ ubuntu              latest              f753707788c5        4 weeks ago         
 列出特定的某个镜像，也就是说指定仓库名和标签
 
 ```bash
-$ docker image ls ubuntu:18.04
+$ docker images ls ubuntu:18.04
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 ubuntu              18.04               f753707788c5        4 weeks ago         127 MB
 ```
@@ -91,7 +91,7 @@ ubuntu              18.04               f753707788c5        4 weeks ago         
 除此以外，`docker image ls` 还支持强大的过滤器参数 `--filter`，或者简写 `-f`。之前我们已经看到了使用过滤器来列出虚悬镜像的用法，它还有更多的用法。比如，我们希望看到在 `mongo:3.2` 之后建立的镜像，可以用下面的命令：
 
 ```bash
-$ docker image ls -f since=mongo:3.2
+$ docker images ls -f since=mongo:3.2
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 redis               latest              5f515359c7f8        5 days ago          183 MB
 nginx               latest              05a60462f8ba        5 days ago          181 MB
@@ -102,7 +102,7 @@ nginx               latest              05a60462f8ba        5 days ago          
 此外，如果镜像构建时，定义了 `LABEL`，还可以通过 `LABEL` 来过滤。
 
 ```bash
-$ docker image ls -f label=com.example.version=0.1
+$ docker images ls -f label=com.example.version=0.1
 ...
 ```
 
@@ -111,7 +111,7 @@ $ docker image ls -f label=com.example.version=0.1
 默认情况下，`docker image ls` 会输出一个完整的表格，但是我们并非所有时候都会需要这些内容。比如，刚才删除虚悬镜像的时候，我们需要利用 `docker image ls` 把所有的虚悬镜像的 ID 列出来，然后才可以交给 `docker image rm` 命令作为参数来删除指定的这些镜像，这个时候就用到了 `-q` 参数。
 
 ```bash
-$ docker image ls -q
+$ docker images ls -q
 5f515359c7f8
 05a60462f8ba
 fe9198c04d62
@@ -128,7 +128,7 @@ f753707788c5
 比如，下面的命令会直接列出镜像结果，并且只包含镜像ID和仓库名：
 
 ```bash
-$ docker image ls --format "{{.ID}}: {{.Repository}}"
+$ docker images ls --format "{{.ID}}: {{.Repository}}"
 5f515359c7f8: redis
 05a60462f8ba: nginx
 fe9198c04d62: mongo
@@ -141,7 +141,7 @@ f753707788c5: ubuntu
 或者打算以表格等距显示，并且有标题行，和默认一样，不过自己定义列：
 
 ```bash
-$ docker image ls --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}"
+$ docker images ls --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}"
 IMAGE ID            REPOSITORY          TAG
 5f515359c7f8        redis               latest
 05a60462f8ba        nginx               latest
